@@ -6,8 +6,8 @@ const NotificationSchema = new Schema<INotification>({
   type: { type: String, required: true },
   message: { type: String, required: true },
   isRead: { type: Boolean, required: true, default: false },
-  createdBy: { type: mongoose.Types.ObjectId, ref: 'User' },
-  updatedBy: { type: mongoose.Types.ObjectId, ref: 'User' },
+  // createdBy: { type: mongoose.Types.ObjectId, required: false, ref: 'User' },
+  // updatedBy: { type: mongoose.Types.ObjectId, required: false, ref: 'User' },
 }, { timestamps: true });
 
 export default mongoose.model<INotification>('Notification', NotificationSchema);

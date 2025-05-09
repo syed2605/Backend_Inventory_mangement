@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import app from './app';
 import { connectDB } from './config/db';
+// import { sendEmail } from './notifications/MailNotification';
 
 
 dotenv.config();
@@ -11,3 +12,23 @@ connectDB().then(() => {
   console.log(`Server running on http://localhost:${PORT}`);
   });
 });
+
+// setTimeout(() => {
+//   sendEmail({ 
+
+//     to: "sampleemail@gmail.com", 
+
+//     subject: "Your login credentials", 
+
+//     text: "", 
+
+//     html: `<div> 
+
+//            <p>User name: sample</p> 
+
+//            <p>Password: sample Password</p> 
+
+//            <div>` 
+
+//     });
+// },3000)

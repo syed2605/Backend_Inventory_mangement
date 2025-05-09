@@ -6,19 +6,18 @@ import UserModel from "../models/user.model";
 import mongoose from "mongoose";
 import { IUser } from "../interfaces/model.interfaces";
 
-
 // Inject your services (using a DI container or manual instantiation)
 export const userService: UserService = {
     findUserByEmail: async (email: string, password: string): Promise<IUser | null> => {
         try {
-        const user: IUser | null= await UserModel.findOne({ email, password }).exec();
-        return user;
+            const user = await UserModel.findOne({ email, password }).exec();
+            return user;
         } catch (error) {
         console.error('Error finding user by email in service:', error);
         throw { status: 500, message: 'Error finding user' };
         }
        },
-    getUserById: async (id: mongoose.Schema.Types.ObjectId): Promise<UserDocument | null> => {
+    getUserById: async (id: mongoose.Schema.Types.ObjectId): Promise<IUser | null> => {
         try {
         // if (!Types.ObjectId.isValid(id)) {
         // throw { status: 400, message: 'Invalid User ID format' };
@@ -38,7 +37,7 @@ export const userService: UserService = {
         throw { status: 500, message: 'Error fetching user by ID' };
         }
        },
-       createUser: async (user : UserDocument) :  Promise<UserDocument | null> => {
+       createUser: async (user : IUser) :  Promise<IUser | null> => {
         try {
             const userCreated = new UserModel(user);
             return await userCreated.save();
@@ -50,7 +49,7 @@ export const userService: UserService = {
             throw { status: 500, message: 'Error creating User' };
         }
        },
-       getUserByID: async (_id : mongoose.Schema.Types.ObjectId) :  Promise<UserDocument[] | null> => {
+       getUserByID: async (_id : mongoose.Schema.Types.ObjectId) :  Promise<IUser[] | null> => {
         try {
             const user= await UserModel.find({_id }).select("-password");
             return user;
@@ -67,7 +66,7 @@ export const userService: UserService = {
 
     
 export const tokenService: TokenService = {
-    generateAccessToken: (user: UserDocument): string => {
+    generateAccessToken: (user: IUser): string => {
         const payload = { userId: user._id };
         const secret = process.env.JWT_SECRET_KEY || 'access-token-key';
         const options: SignOptions = {
@@ -75,7 +74,7 @@ export const tokenService: TokenService = {
         };
         return jwt.sign(payload, secret, options);
       },
-    generateRefreshToken: (user: UserDocument): string => {
+    generateRefreshToken: (user: IUser): string => {
         const payload = { userId: user._id };
         const secret = process.env.JWT_SECRET_KEY || 'refresh-token-key';
         const options: SignOptions = {

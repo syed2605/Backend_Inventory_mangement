@@ -6,8 +6,8 @@ const UserSchema = new Schema<IUser>({
   role: { type: String, required: true, enum: Object.values(UserRole) },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  createdBy: { type: mongoose.Types.ObjectId, ref: 'User' },
-  updatedBy: { type: mongoose.Types.ObjectId, ref: 'User' },
+  createdBy: { type: mongoose.Types.ObjectId, required: false, ref: 'User' },
+  updatedBy: { type: mongoose.Types.ObjectId, required: false, ref: 'User' },
 }, { timestamps: true });
 
 export default mongoose.model<IUser>('User', UserSchema);

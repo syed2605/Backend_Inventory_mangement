@@ -7,7 +7,7 @@ export enum UserRole {
 }
 
 export interface IUser extends Document, ITimeStamps, ICreatedUpdatedBy {
-  _id: mongoose.Schema.Types.ObjectId
+  _id:mongoose.Schema.Types.ObjectId;
   name: string;
   role: UserRole;
   email: string;
@@ -40,8 +40,8 @@ export interface IStock extends Document, ITimeStamps, ICreatedUpdatedBy {
   isExpired: boolean;
 }
 
-export interface INotification extends Document, ITimeStamps, ICreatedUpdatedBy {
-  user_id: mongoose.Schema.Types.ObjectId;
+export interface INotification extends Document{
+  user_id: mongoose.Schema.Types.ObjectId | string;
   type: string;
   message: string;
   isRead: boolean;

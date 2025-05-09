@@ -1,15 +1,19 @@
 import { Request, Response } from "express";
 import { errorResponse, successResponse } from "../utils/user.utils";
-import { IToken, TokenDocument, UserDocument } from "../interfaces/interface";
+import { IToken, TokenDocument } from "../interfaces/interface";
 import { tokenService, userService } from "../services/user.service";
 import mongoose from "mongoose";
 import TokenModel from "../models/token";
 import { AuthenticatedRequest } from "../middleware/authMiddleware";
+import { INotification, IUser } from "../interfaces/model.interfaces";
+import { getIO } from "../socket/socket";
+import { notificationServices } from "../services/notification.services";
+import { INotifi } from "../interfaces/common.interfaces";
 
 export const validateUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
-    const user : UserDocument | null = await userService.findUserByEmail(email, password);
+    const user : IUser | null = await userService.findUserByEmail(email, password);
     
     if (!user) {
       res.status(404).json({ message: 'User not found' });
@@ -67,7 +71,7 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
     try {
         //  Use the type of your request object.
         const userId = req.body.userId; // You might need to adjust how you get this data
-        const user : UserDocument | null = await userService.getUserById(userId);
+        const user : IUser | null = await userService.getUserById(userId);
 
         if (!user) {
             res.status(404).json({ message: 'User not found for this refresh token' });
@@ -90,8 +94,16 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
 
 export const createUserController = async (req: Request, res : Response) : Promise<void> => {
     try{
-            const newSavedUser : UserDocument | null = await userService.createUser(req.body);
-    
+            const newSavedUser : IUser | null = await userService.createUser(req.body);
+            getIO().emit("User Created", newSavedUser);
+            const newNotifi : INotifi = {
+              user_id : newSavedUser?._id,
+              type: "user Created",
+              message: "user created successfully",
+              isRead: false
+            }
+            const newNotification : INotification | null = await notificationServices.addNotifications(newNotifi)
+            console.log(newNotification)
             res.status(201).json(successResponse(newSavedUser, "User Created successfully"));
         }
         catch (error) {
@@ -101,7 +113,7 @@ export const createUserController = async (req: Request, res : Response) : Promi
 
 export const getUserById = async (req: Request, res : Response) : Promise<void> => {
     try{
-            const user : UserDocument[] | null = await userService.getUserByID(req.params.id as unknown as mongoose.Schema.Types.ObjectId);
+            const user : IUser[] | null = await userService.getUserByID(req.params.id as unknown as mongoose.Schema.Types.ObjectId);
             
             res.status(201).json(successResponse(user, "User fetched successfully"));
         }
