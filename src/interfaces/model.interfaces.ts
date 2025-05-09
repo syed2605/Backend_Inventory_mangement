@@ -7,6 +7,7 @@ export enum UserRole {
 }
 
 export interface IUser extends Document, ITimeStamps, ICreatedUpdatedBy {
+  _id: mongoose.Schema.Types.ObjectId
   name: string;
   role: UserRole;
   email: string;

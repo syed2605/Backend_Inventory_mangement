@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { IUser } from "./model.interfaces";
 
 export interface IToken extends Document {
     _id: mongoose.Schema.Types.ObjectId;
@@ -19,7 +20,7 @@ export interface IToken extends Document {
           updatedAt?: Date;
         }
     export interface UserService {
-        findUserByEmail(email: string, password: string): Promise<UserDocument | null>;
+        findUserByEmail(email: string, password: string): Promise<IUser | null>;
         getUserById(userId: mongoose.Schema.Types.ObjectId): Promise<UserDocument | null>; // Added getUserById
         createUser(user: UserDocument): Promise<UserDocument | null>; // Added getUserById
         getUserByID(uid: mongoose.Schema.Types.ObjectId): Promise<UserDocument[] | null>; // Added getUserById

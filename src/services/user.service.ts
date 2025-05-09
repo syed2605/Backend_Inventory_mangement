@@ -4,12 +4,14 @@ import TokenModel from "../models/token";
 import jwt from 'jsonwebtoken';
 import UserModel from "../models/user.model";
 import mongoose from "mongoose";
+import { IUser } from "../interfaces/model.interfaces";
+
 
 // Inject your services (using a DI container or manual instantiation)
 export const userService: UserService = {
-    findUserByEmail: async (email: string, password: string): Promise<UserDocument | null> => {
+    findUserByEmail: async (email: string, password: string): Promise<IUser | null> => {
         try {
-        const user = await UserModel.findOne({ email, password }).exec();
+        const user: IUser | null= await UserModel.findOne({ email, password }).exec();
         return user;
         } catch (error) {
         console.error('Error finding user by email in service:', error);
