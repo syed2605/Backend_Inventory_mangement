@@ -1,4 +1,4 @@
-import { IToken } from '../interface/interface';
+import { IToken } from '../interfaces/interface';
 import mongoose, { Schema, Document } from 'mongoose';
 
 

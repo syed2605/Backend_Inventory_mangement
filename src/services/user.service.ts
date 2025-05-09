@@ -1,8 +1,8 @@
 import { SignOptions } from "jsonwebtoken";
-import { IToken, TokenService, UserDocument, UserService } from "../interface/interface";
+import { IToken, TokenService, UserDocument, UserService } from "../interfaces/interface";
 import TokenModel from "../models/token";
 import jwt from 'jsonwebtoken';
-import UserModel from "../models/users";
+import UserModel from "../models/user.model";
 import mongoose from "mongoose";
 
 // Inject your services (using a DI container or manual instantiation)

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { errorResponse, successResponse } from "../utils/user.utils";
-import { IToken, TokenDocument, UserDocument } from "../interface/interface";
+import { IToken, TokenDocument, UserDocument } from "../interfaces/interface";
 import { tokenService, userService } from "../services/user.service";
 import mongoose from "mongoose";
 import TokenModel from "../models/token";
